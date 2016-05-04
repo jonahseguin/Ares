@@ -1,8 +1,8 @@
 package com.mcares.ares.checks;
 
-import com.mcares.ares.check.Check;
 import com.mcares.ares.check.CheckType;
 import com.mcares.ares.check.TimerCheck;
+import com.mcares.ares.check.checker.checkers.CheckerAutoClick;
 import com.mcares.ares.configuration.annotations.ConfigData;
 import com.mcares.ares.player.AresCache;
 import com.mcares.ares.player.AresPlayer;
@@ -27,7 +27,8 @@ public class CheckAutoClick extends TimerCheck {
 
     @Override
     public void check(AresPlayer player) {
-        double[] cps = player.getData().getClicksPerSecond();
+        CheckerAutoClick data = (CheckerAutoClick) player.getChecker(getCheckType());
+        double[] cps = data.getClicksPerSecond();
 
         if(cps[3] >= maxClicksPerSecond
                 && cps[2] >= maxClicksPerSecond
@@ -40,7 +41,7 @@ public class CheckAutoClick extends TimerCheck {
         cps[1] = cps[2];
         cps[2] = cps[3];
         cps[3] = 0.0;
-        player.getData().setClicksPerSecond(cps);
+        data.setClicksPerSecond(cps);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -61,9 +62,10 @@ public class CheckAutoClick extends TimerCheck {
     }
 
     private void updateCps(AresPlayer p, double i){
-        double[] cps = p.getData().getClicksPerSecond();
+        CheckerAutoClick data = (CheckerAutoClick) p.getChecker(getCheckType());
+        double[] cps = data.getClicksPerSecond();
         cps[3] = cps[3] + i;
-        p.getData().setClicksPerSecond(cps);
+        data.setClicksPerSecond(cps);
     }
 
 }

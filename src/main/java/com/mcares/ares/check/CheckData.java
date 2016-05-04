@@ -6,10 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CheckData{
-
-    //Fuck it.
-    //Make sure to assign all values a default value, even null.
+public class CheckData {
 
     /**
      * Speed
@@ -37,11 +34,6 @@ public class CheckData{
      * Regen
      */
     private double healthPerSecond = 0;
-
-    /**
-     * AutoClick
-     */
-    private double[] clicksPerSecond = new double[]{0,0,0,0};// We will be keeping track of the past 4 seconds worth of cps
 
     /**
      * HighJump

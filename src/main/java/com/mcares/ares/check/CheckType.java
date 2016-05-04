@@ -1,5 +1,7 @@
 package com.mcares.ares.check;
 
+import com.mcares.ares.check.checker.Checker;
+import com.mcares.ares.check.checker.checkers.CheckerAutoClick;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -9,10 +11,10 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum CheckType {
 
-    FLY,
+    FLY(),
     SPEED,
     VCLIP("VClip"),
-    AUTO_CLICK("AutoClick"),
+    AUTO_CLICK("AutoClick", CheckerAutoClick.class),
     TRIGGER_BOT("TriggerBot"),
     AURA,
     ANTI_KNOCKBACK("AntiKnockback"),
@@ -32,12 +34,19 @@ public enum CheckType {
     HIGH_JUMP("HighJump");
 
     private final String name;
+    private final Class<? extends Checker> checker;
 
-    CheckType(String name){
+    CheckType(String name, Class<? extends Checker> checker){
         this.name = name;
+        this.checker = checker;
     }
-    CheckType() {
+    CheckType(Class<? extends Checker> checker) {
         this.name = StringUtils.capitalize(name().toLowerCase().replaceAll("_", ""));
+        this.checker = checker;
+    }
+
+    public Class<? extends Checker> getChecker() {
+        return checker;
     }
 
     public String getName() {

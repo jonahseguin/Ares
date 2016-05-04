@@ -2,6 +2,7 @@ package com.mcares.ares.player;
 
 import com.mcares.ares.cache.CachePlayer;
 import com.mcares.ares.check.*;
+import com.mcares.ares.check.checker.Checker;
 import com.mcares.ares.database.mongo.annotations.CollectionName;
 import com.mcares.ares.database.mongo.annotations.DatabaseSerializer;
 import com.mcares.ares.database.mongo.annotations.MongoColumn;
@@ -41,6 +42,8 @@ public class AresPlayer extends CachePlayer {
 
     @Getter private final CheckData data = new CheckData();
 
+    private final Map<CheckType, Checker> checkers = new HashMap<>();
+
     public Violation addVL(CheckType checkType, boolean cancelled){
         Check check = CheckManager.get().getCheck(checkType);
         if (check == null) {
@@ -67,4 +70,23 @@ public class AresPlayer extends CachePlayer {
         violations.put(hackType,0);
         return 0;
     }
+
+    public Checker getChecker(CheckType checkType) {
+        if(!checkers.containsKey(checkType)) {
+            checkers.put(checkType, instantiateChecker(checkType));
+        }
+        return checkers.get(checkType);
+    }
+
+    private Checker instantiateChecker(CheckType checkType) {
+        Checker checker;
+        try{
+            checker = checkType.getChecker().newInstance();
+        }
+        catch (IllegalAccessException | InstantiationException ex) {
+            throw new RuntimeException("Ares could not instantiate CheckData: ", ex);
+        }
+        return checker;
+    }
+
 }
