@@ -1,0 +1,16 @@
+name: Ares
+main: com.mcares.ares.Ares
+version: ${project.version}
+authors: [Shawckz, TheLightMC]
+website: http://ares-anticheat.com
+depend: [ProtocolLib]
+
+commands:
+  ares:
+    usage: /<command> [arguments]
+    description: Main Ares command
+    aliases: ['!', 'are']
+  alerts:
+    usage: /alerts [player]
+    description: Toggle yours or another players alerts
+    aliases: [alertson, alertsoff, togglealerts, al]
